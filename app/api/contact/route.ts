@@ -91,7 +91,7 @@ export async function POST(request: Request) {
          demande_visite, etre_rappele, plus_de_photos, message)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        body.civilite,
+        body.civilite as "mme" | "m",
         body.nom!.trim(),
         body.prenom!.trim(),
         body.email!.trim(),
@@ -109,7 +109,7 @@ export async function POST(request: Request) {
       await connexion.execute(
         `INSERT INTO disponibilite (contact_id, jour, heure, minute)
          VALUES (?, ?, ?, ?)`,
-        [contactId, d.jour!.toLowerCase(), d.heure, d.minute]
+        [contactId, d.jour!.toLowerCase(), d.heure!, d.minute!]
       );
     }
 
