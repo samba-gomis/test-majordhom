@@ -54,10 +54,58 @@ export default function ContactForm() {
   const retirerDispo = (index: number) =>
     setDispos((d) => d.filter((_, i) => i !== index));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Envoi du formulaire
+  const [statut, setStatut] = useState<"idle" | "envoi" | "succes" | "erreur">(
+    "idle"
+  );
+  const [erreurs, setErreurs] = useState<string[]>([]);
+
+  const reinitialiser = () => {
+    setCivilite("");
+    setNom("");
+    setPrenom("");
+    setEmail("");
+    setTelephone("");
+    setSujets({ demande_visite: false, etre_rappele: false, plus_de_photos: false });
+    setMessage("");
+    setDispos([]);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO branche feature/api : envoi vers /api/contact
-    console.log({ civilite, nom, prenom, email, telephone, sujets, message, dispos });
+    setStatut("envoi");
+    setErreurs([]);
+
+    try {
+      const reponse = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          civilite,
+          nom,
+          prenom,
+          email,
+          telephone,
+          sujets,
+          message,
+          dispos,
+        }),
+      });
+
+      const donnees = await reponse.json();
+
+      if (!reponse.ok) {
+        setErreurs(donnees.erreurs ?? ["Une erreur est survenue, veuillez réessayer."]);
+        setStatut("erreur");
+        return;
+      }
+
+      setStatut("succes");
+      reinitialiser();
+    } catch {
+      setErreurs(["Impossible de contacter le serveur, veuillez réessayer."]);
+      setStatut("erreur");
+    }
   };
 
   return (
@@ -243,11 +291,26 @@ export default function ContactForm() {
               className="mt-4 w-full resize-none rounded-3xl bg-white px-5 py-4 text-sm text-gray-700 placeholder-gray-400 outline-none focus:ring-2 focus:ring-amber-400"
             />
 
+            {statut === "succes" && (
+              <p className="mt-4 rounded-2xl bg-green-600/90 px-5 py-3 text-sm text-white">
+                Votre message a bien été envoyé, nous vous recontacterons rapidement.
+              </p>
+            )}
+
+            {statut === "erreur" && erreurs.length > 0 && (
+              <ul className="mt-4 list-disc space-y-1 rounded-2xl bg-red-600/90 px-5 py-3 pl-8 text-sm text-white">
+                {erreurs.map((erreur) => (
+                  <li key={erreur}>{erreur}</li>
+                ))}
+              </ul>
+            )}
+
             <button
               type="submit"
-              className="mt-auto ml-auto cursor-pointer rounded-full bg-amber-400 px-14 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-amber-500"
+              disabled={statut === "envoi"}
+              className="mt-auto ml-auto cursor-pointer rounded-full bg-amber-400 px-14 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Envoyer
+              {statut === "envoi" ? "Envoi…" : "Envoyer"}
             </button>
           </div>
         </div>
