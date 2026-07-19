@@ -5,7 +5,7 @@ Intégration fidèle à la maquette d'un formulaire de contact pour une agence i
 ## Profil
 
 **Samba Diop Gomis**
-Bachelor Développeur Logiciel — La Plateforme, Marseille (depuis novembre 2025)
+Bachelor Concepteur Développeur Logiciel Fullstack à La Plateforme, Marseille (depuis novembre 2025)
 En recherche d'une alternance de 24 mois à partir de septembre 2026, rythme 4 semaines en entreprise / 1 semaine en école
 
 - Portfolio : https://sdg-portfolio.netlify.app/
