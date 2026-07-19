@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Test majordhom — Formulaire de contact agence
 
-## Getting Started
+Intégration fidèle à la maquette d'un formulaire de contact pour une agence immobilière, avec enregistrement des données en base de données.
 
-First, run the development server:
+## Profil
+
+**Samba Diop Gomis**
+Bachelor Développeur Logiciel — La Plateforme, Marseille (depuis novembre 2025)
+En recherche d'une alternance de 24 mois à partir de septembre 2026, rythme 4 semaines en entreprise / 1 semaine en école
+
+- Portfolio : https://sdg-portfolio.netlify.app/
+- GitHub : https://github.com/samba-gomis
+- Email : samba.diop.gomis@gmail.com
+- Téléphone : +33 6 29 33 42 16
+
+## Captures d'écran
+
+![Formulaire rempli](docs/screenshots/formulaire.png)
+
+![Envoi réussi (201) et tables en base](docs/screenshots/envoi-reussi.png)
+
+## Stack technique
+
+| Outil | Rôle | Pourquoi |
+|---|---|---|
+| **Next.js 16** (App Router) | Frontend + backend | Imposé par le sujet (React ou Next.js) ; les API Routes permettent d'avoir le formulaire et l'endpoint de soumission dans un seul projet, sans backend séparé |
+| **React 19** | UI | Fourni avec Next.js |
+| **TypeScript** | Typage | Sécurise les échanges entre le formulaire, l'API et les requêtes SQL (évite les erreurs sur les champs requis) |
+| **Tailwind CSS v4** | Style | Permet de reproduire rapidement et précisément la maquette (pilules, dégradés, disposition en grille) |
+| **MySQL 8.4** | Base de données | Demandé pour la persistance des données du formulaire |
+| **mysql2** | Client MySQL (Node) | Client MySQL avec API `promise`, compatible avec les routes async de Next.js et le typage TypeScript |
+| **Docker / docker-compose** | Environnement de base de données | Évite d'installer MySQL en local ; la base et son schéma (`database/init.sql`) démarrent avec une seule commande |
+
+## Lancer le projet
 
 ```bash
+git clone https://github.com/samba-gomis/test-majordhom.git
+cd test-majordhom
+npm install
+cp .env.example .env
+
+# démarre la base MySQL (charge automatiquement database/init.sql)
+docker compose up -d
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le site est ensuite disponible sur [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Modèle de données
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `contact` : civilité, nom, prénom, email, téléphone, sujets de la demande (checkboxes), message
+- `disponibilite` : jour / heure / minute, liée à un `contact` (une visite peut avoir plusieurs créneaux proposés)
 
-## Learn More
+Schéma complet : [database/init.sql](database/init.sql)
 
-To learn more about Next.js, take a look at the following resources:
+## Questions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Quel a été ton niveau de difficulté sur ce test ?**
+Un peu compliqué par moments il a fallu faire de la veille (recherche/documentation) sur certains points, notamment Docker et les API Routes, mais j'y suis arrivé au final.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**As-tu appris de nouveaux outils/technologies pendant cet exercice ?**
+Oui, notamment Docker (pour faire tourner MySQL en local) et les API Routes de Next.js.
 
-## Deploy on Vercel
+**Quelle place a le développement web dans ton parcours scolaire ?**
+Je fais du développement tout au long de mon parcours scolaire, c'est une part centrale de ma formation.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**As-tu utilisé l'IA dans ton processus de travail ? Comment ?**
+Oui, j'utilise l'IA pour me documenter et progresser sur certaines compétences (débogage, découverte d'outils comme Docker, bonnes pratiques).
