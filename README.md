@@ -10,8 +10,6 @@ En recherche d'une alternance de 24 mois à partir de septembre 2026, rythme 4 s
 
 - Portfolio : https://sdg-portfolio.netlify.app/
 - GitHub : https://github.com/samba-gomis
-- Email : samba.diop.gomis@gmail.com
-- Téléphone : +33 6 29 33 42 16
 
 ## Captures d'écran
 
